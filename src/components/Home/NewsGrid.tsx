@@ -1,6 +1,5 @@
 import { Article } from "@/utils/types";
 import NewsArticleCarousel from "./NewsArticleCarousel";
-import MediaCarousel from "./SocialMedia";
 
 export default function NewsGrid({
   ufcArticles,
@@ -26,11 +25,11 @@ export default function NewsGrid({
         isBadge={true}
       />
       <NewsArticleCarousel title="UFC" articles={ufcArticles} isBadge={false} />
-      <NewsArticleCarousel
+      {/* <NewsArticleCarousel
         title="Boxing"
         articles={boxingArticles}
         isBadge={false}
-      />
+      /> */}
     </>
   );
 }

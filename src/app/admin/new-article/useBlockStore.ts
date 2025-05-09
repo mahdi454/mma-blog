@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ContentType = "text" | "h1" | "h2" | "image" | "embed";
+type ContentType = "text" | "image" | "embed";
 
 type ImageContentType = {
   id: string;
@@ -19,9 +19,10 @@ type EmbedContentType = {
 
 type TextContentType = {
   id: string;
-  type: "text" | "h1" | "h2";
+  type: "text";
   content: string;
-  isSaved:boolean;
+  txtType:string;
+
 };
 
 export type Block = TextContentType | ImageContentType | EmbedContentType;
@@ -37,7 +38,7 @@ type BlocksStore = {
 
 // Create the Zustand store
 export const useBlocksStore = create<BlocksStore>((set, get) => ({
-  blocks: [{ id: Date.now().toString(), type: "text", content: "",isSaved:false }],
+  blocks: [{ id: Date.now().toString(), type: "text", content: "", txtType:"Paragraph" }],
 
   // Add a new block
   addBlock: (type, afterId) =>
@@ -46,13 +47,12 @@ export const useBlocksStore = create<BlocksStore>((set, get) => ({
 
       switch (type) {
         case "text":
-        case "h1":
-        case "h2":
           newBlock = {
             id: Date.now().toString(),
-            type,
+            type: "text",
             content: "",
-            isSaved:false
+            txtType: "Paragraph"
+
           };
           break;
         case "image":
@@ -93,11 +93,11 @@ export const useBlocksStore = create<BlocksStore>((set, get) => ({
   updateBlock: (id, newContent) =>
     set(
       (state) =>
-        ({
-          blocks: state.blocks.map((block) =>
-            block.id === id ? { ...block, ...newContent } : block
-          ),
-        } as Partial<BlocksStore>)
+      ({
+        blocks: state.blocks.map((block) =>
+          block.id === id ? { ...block, ...newContent } : block
+        ),
+      } as Partial<BlocksStore>)
     ),
 
   // Get a specific block by ID

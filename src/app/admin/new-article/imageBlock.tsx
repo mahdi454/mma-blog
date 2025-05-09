@@ -36,6 +36,9 @@ const ImageBlock: React.FC<ImageBlockProps> = React.memo(({ blockId }) => {
       setIsModalOpen(false);
   }
 
+  const imagePosition = `object-[center_${block.centered}%] `;
+
+
   return (
     <div className="relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] group">
       <div className=" bg-gray-950 absolute flex right-0 z-50  gap-2 border-gray-200  border-[1px] px-1 rounded-full group-hover:opacity-95 opacity-0 mr-2">
@@ -52,7 +55,7 @@ const ImageBlock: React.FC<ImageBlockProps> = React.memo(({ blockId }) => {
           height={760}
           src="/placeholder.webp"
           alt="Getty Image of an event with participants and audience"
-          className="w-full h-full object-cover  bg-gray-950 sm:px-2"
+          className="w-full h-full object-cover  bg-gray-950 "
         />
       ) : (
         <>
@@ -62,10 +65,10 @@ const ImageBlock: React.FC<ImageBlockProps> = React.memo(({ blockId }) => {
             src={block.url}
             alt="image"
             className={cn(
-              `w-full h-full object-cover  sm:px-2 object-[center_${block.centered}%] `
+              "w-full h-full object-cover   ", imagePosition
             )}
           />
-          <span className="absolute bottom-0 left-0 text-gray-300 px-2">
+          <span className="absolute bottom-0 right-0 bg-black/40 px-1 text-gray-300 text-sm">
             {block.desc}
           </span>
         </>

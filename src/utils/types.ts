@@ -1,4 +1,4 @@
-import { Block } from "@/app/admin/new-article/useBlockStore";
+import type { Content } from "@tiptap/react"
 
 export interface Article {
   id: string;
@@ -8,10 +8,10 @@ export interface Article {
   created_at: string;
   updated_at: string;
   badge: string;
-  blocks: Block[];
-  keywords: string;
-
+  blocks: Content;
+  keywords: string[];
 }
+
 
 export interface SportsEvent {
   id: string;

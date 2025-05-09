@@ -13,14 +13,7 @@ export default function AdminNav() {
   const [isModalOpen, setIsModalOpen] = React.useState<boolean>(false);
   const blocks = useBlocksStore((state) => state.blocks);
 
-  const isUnsavedBlocks = () => {
-    return blocks.some((block) => {
-      if (block.type === "h1" || block.type === "h2" || block.type === "text") {
-        return !block.isSaved;
-      }
-      return false;
-    });
-  };
+
 
   return (
     <nav className="bg-gray-900 text-white">
@@ -41,9 +34,9 @@ export default function AdminNav() {
           </div>
           <div className="flex items-center gap-4">
             <div>
-              <button
+              {/* <button
                 onClick={() => setIsModalOpen(true)}
-                disabled={isUnsavedBlocks() || !blocks.length}
+                disabled={ !blocks.length}
                 className="bg-white text-black px-6 py-1 sm:py-2 rounded-full hover:bg-gray-300 transition-colors tracking-wider hover:cursor-pointer disabled:cursor-not-allowed disabled:bg-gray-300"
               >
                 Publish
@@ -54,7 +47,7 @@ export default function AdminNav() {
                 closeOnOutsideClick={false}
               >
                 <NewArticle onClose={() => setIsModalOpen(false)} />
-              </Modal>
+              </Modal> */}
             </div>
 
             <UserProfile />

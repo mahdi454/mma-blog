@@ -28,7 +28,7 @@ export default async function HomePage() {
       .select("*")
       .eq("badge", "Hot")
       .order("created_at", { ascending: false })
-      .limit(3);
+      .limit(5);
 
     if (ufcError || boxingError || hotError) {
       throw new Error(
@@ -59,6 +59,7 @@ export default async function HomePage() {
           boxingArticles={[]}
           error={(error as Error).message}
         />
+         
       </MaxWidthWrapper>
     );
   }

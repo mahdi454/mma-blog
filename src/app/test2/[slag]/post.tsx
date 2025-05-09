@@ -7,7 +7,7 @@ type PostProps = {
   
   const Post: React.FC<PostProps> = ({ blocks }) => {
     return (
-      <article className="space-y-6">
+      <article className="space-y-3 md:space-y-4">
         {blocks.blocks.map((block, index) => (
           <div key={block.id}>
             <RenderBlock block={block} index={index} blocks={blocks} />

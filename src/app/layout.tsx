@@ -1,16 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
 import MainNav from "@/components/layout/MainNav";
+import { HeroHighlight } from "@/components/ui/bgDot";
+import { IBM_Plex_Mono } from "next/font/google";
+import {ThemeProvider} from "next-themes"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const IBM_Font = IBM_Plex_Mono({
+  weight: "400",
+  style: "normal",
   subsets: ["latin"],
 });
 
@@ -25,16 +23,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <div className="min-h-screen flex flex-col bg-gray-950 text-gray-50">
-          <MainNav />
-          <main>{children}</main>
-          <Footer />
-        </div>
-    
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${IBM_Font.className} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <HeroHighlight>
+            <div className="min-h-screen flex flex-col text-slate-50">
+              <MainNav />
+              <main>{children}</main>
+              <Footer />
+            </div>
+          </HeroHighlight>
+        </ThemeProvider>
       </body>
     </html>
   );

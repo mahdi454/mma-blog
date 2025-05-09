@@ -1,7 +1,16 @@
 import React from "react";
 import { Menu } from "lucide-react";
 import Link from "next/link";
+import MaxWidthWrapper from "../maxWidthWrapper";
+import { MenuSheet } from "./menu";
+import Image from "next/image";
+import { Mouse_Memoirs } from "next/font/google";
 
+const IBM_Font = Mouse_Memoirs({
+  weight: "400",
+  style: "normal",
+  subsets: ["latin"],
+});
 const navigationItems = [
   { text: "News", href: "#" },
   { text: "UFC", href: "#" },
@@ -13,26 +22,30 @@ const navigationItems = [
 
 export default function Navbar() {
   return (
-    <nav className="bg-gray-950 text-white shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <div className="flex items-center">
-            <Link href="/">
-              <div className="text-xl font-bold mr-8">MMA Hub</div>
-            </Link>
-            <div className="hidden md:flex items-center space-x-8">
-              {navigationItems.map((item) => (
-                <NavLink key={item.text} text={item.text} href={item.href} />
-              ))}
-            </div>
-          </div>
+    <MaxWidthWrapper>
 
-          <div className="md:hidden">
-            <Menu className="h-6 w-6 cursor-pointer" />
-          </div>
+      <nav className="  bg-black/50 backdrop-blur-[1px] text-white">
+
+        <div className="flex justify-between items-center h-16 md:h-20">
+
+
+          <Link href="/" className="h-32  md:h-40 w-36 md:w-44 ml-2 md:ml-4">
+            <Image
+              width={200}
+              height={200}
+              src='/mma_logo.png'
+              alt="logo-image"
+              className="w-full h-full object-cover"
+
+            />
+
+          </Link>
+          <MenuSheet />
+
+
         </div>
-      </div>
-    </nav>
+      </nav>
+    </MaxWidthWrapper>
   );
 }
 

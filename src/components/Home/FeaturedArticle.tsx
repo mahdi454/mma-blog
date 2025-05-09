@@ -9,10 +9,9 @@ import {
 } from "@/components/ui/carousel";
 import { Article } from "@/utils/types";
 import { useCarousel } from "@/hooks/useCarousel";
-import { Badge } from "../ui/badge";
 import Link from "next/link";
 import { timeSince } from "@/lib/utils";
-import { Clock } from "lucide-react";
+import { Clock, MoveRight } from "lucide-react";
 
 export default function FeaturedArticle({
   hotArticles,
@@ -54,7 +53,7 @@ export default function FeaturedArticle({
       <CarouselContent>
         {hotArticles.map((article, index) => (
           <CarouselItem key={index}>
-            <div className="relative w-full h-[370px] sm:h-[520px] lg:h-[640px] overflow-hidden rounded-2xl">
+            <div className="relative w-full h-[370px] sm:h-[520px] lg:h-[720px] overflow-hidden rounded-sm">
               <div className="absolute inset-0 shadow-inner-container pointer-events-none z-10" />
               {article.blocks[0].type === "image" && (
                 <Image
@@ -68,26 +67,28 @@ export default function FeaturedArticle({
               )}
               <div className="absolute inset-0  bg-gradient-to-t  from-gray-950 to-transparent z-20" />
               <div className="absolute bottom-0 left-0 px-2 py-6 sm:px-12 sm:py-10 text-white z-30">
-                <Badge
-                  className=" w-36 pr-0 "
-                  sClassName=""
-                  pClassName="font-semibold "
-                >
+
+
+                <div className="bg-emerald-700  px-3 py-1 relative clip-arrow w-44 font-semibold rounded-l-sm">
                   <span className="flex items-center gap-2">
                     <span>
-                      <Clock width={14} />
+                      <Clock width={18} />
                     </span>
                     <p className="text-sm"> {timeSince(article.created_at)}</p>
                   </span>
-                </Badge>
-                {article.blocks[1].type === "h1" && 
-                <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mt-4 mb-2 max-w-4xl">
-                  {article.blocks[1].content}
-                </h1>}
+                </div>
+                {article.blocks[1].type === "h1" &&
+                  <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold mt-4 mb-2 max-w-4xl">
+                    {article.blocks[1].content}
+                  </h1>}
                 <Link href={`/test2/${article.id}`}>
-                  <button className="bg-white text-black px-6 py-1 sm:py-2 rounded-full hover:bg-gray-200 transition-colors">
-                    Read More
+                  <button className="relative border border-emerald-600  px-[2px] py-[2px] rounded-full group overflow-hidden mt-3 ">
+                    <span className="border border-emerald-600 rounded-full px-12 py-1  font-semibold flex items-center gap-2 ">
+                      Read More
+                      <span><MoveRight size={18}/></span>
+                    </span>
                   </button>
+
                 </Link>
               </div>
             </div>
@@ -109,11 +110,10 @@ export default function FeaturedArticle({
           <div key={idx} className="w-3 sm:w-6">
             <div className="w-full bg-gray-400 h-1 rounded-full overflow-hidden">
               <div
-                className={`h-full transition-all ${
-                  idx + 1 === current
-                    ? "bg-emerald-700 ease-linear"
-                    : "bg-gray-400"
-                }`}
+                className={`h-full transition-all ${idx + 1 === current
+                  ? "bg-emerald-700 ease-linear"
+                  : "bg-gray-400"
+                  }`}
                 style={{
                   width: idx + 1 === current ? `100%` : "100%",
                 }}

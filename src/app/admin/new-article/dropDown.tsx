@@ -44,18 +44,6 @@ const DropDown: React.FC<DropDownProps> = React.memo(({ blockId }) => {
             <AArrowDown width={18} />
           </DropdownMenuShortcut>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => addBlock("h1", blockId)}>
-          Heading 1
-          <DropdownMenuShortcut>
-            <Heading1 width={18} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => addBlock("h2", blockId)}>
-          Heading 2
-          <DropdownMenuShortcut>
-            <Heading2 width={18} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-gray-800" />
         <DropdownMenuItem onClick={() => addBlock("embed", blockId)}>
           Embed

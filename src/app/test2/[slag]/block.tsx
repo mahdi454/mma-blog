@@ -1,11 +1,12 @@
 import Image from "next/image";
 import { Block } from "../../admin/new-article/useBlockStore";
-import { Badge } from "@/components/ui/badge";
 import { Clock } from "lucide-react";
 import { cn, timeSince } from "@/lib/utils";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";
 import { Article } from "@/utils/types";
 import Script from "next/script";
+import { createClient } from "@/utils/supabase/server";
+import AuthorProfile from "./authorProfile";
 
 
 
@@ -28,6 +29,8 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
   index,
   blocks,
 }) => {
+  blocks.author_id
+
   const parseContent = (text: string) => {
     // Bold: **text**
     let parsedText = text.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
@@ -58,11 +61,9 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
       if (index === 1) {
         return (
           <div className="relative w-full text-white z-30 py-1 sm:py-0">
-            <div className="flex justify-center items-center mt-2">
-              <Badge
-                className="w-56 pr-0 rounded-none"
-                sClassName=""
-                pClassName="font-semibold"
+            <div className="relative">
+              <div
+                className=" clip-arrow bg-emerald-700 rounded-l-sm pl-2 pr-4 w-44 md:w-56"
               >
                 <span className="flex items-center gap-2">
                   <span>
@@ -70,15 +71,15 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
                   </span>
                   <p className="text-sm"> {timeSince(blocks.created_at)}</p>
                 </span>
-              </Badge>
-              <div className="w-full h-1 bg-emerald-700" />
+              </div>
+              <div className="absolute top-[11px] -z-10 w-full h-[1.5px] bg-emerald-700 " />
             </div>
             <h1
-              className="text-2xl sm:text-4xl text-gray-50 font-bold px-2 sm:px-0 pt-1"
+              className="text-xl sm:text-3xl text-gray-50 font-bold mt-2 "
               dangerouslySetInnerHTML={{ __html: parseContent(block.content) }}
             />
-            <div className="mt-5 px-2 sm:px-0 flex justify-between items-center">
-              <p>Created by Mahdi Hassani</p>
+            <div className=" sm:px-0 flex justify-between items-center mt-4 md:mt-6">
+            <AuthorProfile blocksId={blocks.author_id} />
               <div className="flex space-x-4">
                 {socialLinks.map(({ Icon, href }, index) => (
                   <a
@@ -110,7 +111,7 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
       );
     case "image":
       return (
-        <div className="relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] bg-gray-100">
+        <div className="relative w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px]">
           <Image
             width={1140}
             height={760}
@@ -121,7 +122,7 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
             )}
           />
           {block.desc && (
-            <p className=" text-xs font-semibold text-gray-500">{block.desc}</p>
+            <p className="absolute bottom-0 right-0 bg-black/45 px-1 text-xs sm:text-sm  text-gray-300">{block.desc}</p>
           )}
         </div>
       );
@@ -129,7 +130,7 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
       if (block.embedType === "instagram") {
         return (
           <>
-            <div dangerouslySetInnerHTML={{ __html:  block.code }} />
+            <div dangerouslySetInnerHTML={{ __html: block.code }} />
             <Script src="//www.instagram.com/embed.js" strategy="lazyOnload" />
           </>
         );
@@ -137,7 +138,7 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
       if (block.embedType === "twitter") {
         return (
           <>
-            <div dangerouslySetInnerHTML={{ __html:  block.code }} />
+            <div dangerouslySetInnerHTML={{ __html: block.code }} />
             <Script
               src="https://platform.twitter.com/widgets.js"
               strategy="lazyOnload"
@@ -149,7 +150,7 @@ const RenderBlock: React.FC<RenderBlockProps> = async ({
         return (
           <div
             className="w-full h-[280px] sm:h-[360px] md:h-[420px] lg:h-[460px] [&_iframe]:w-[100%!important] [&_iframe]:h-[100%!important]"
-            dangerouslySetInnerHTML={{ __html:  block.code }}
+            dangerouslySetInnerHTML={{ __html: block.code }}
           />
         );
       }

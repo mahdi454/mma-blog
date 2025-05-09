@@ -9,15 +9,14 @@ import withAuth from "../withAuth";
 
 const ArticleEditor: React.FC = () => {
   const blocks = useBlocksStore((state) => state.blocks);
+  console.log(blocks)
 
   return (
-    <MaxWidthWrapper className="max-w-screen-lg">
-      <div className="relative text-gray-50 flex flex-col gap-2 ">
+    <MaxWidthWrapper className="max-w-screen-2xl ">
+      <div className="relative text-gray-50 flex flex-col gap-2 max-w-5xl ">
         {blocks.map((block) => (
           <div key={block.id}>
-            {block.type === "text" ||
-            block.type === "h1" ||
-            block.type === "h2" ? (
+            {block.type === "text" ? (
               <TextBlock blockId={block.id} />
             ) : block.type === "image" ? (
               <ImageBlock blockId={block.id} />
