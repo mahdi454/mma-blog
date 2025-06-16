@@ -14,9 +14,10 @@ export function MenuSheet() {
     return (
         <Sheet >
             <SheetTrigger asChild>
-                <div className="relative flex flex-col gap-2 px-4">
-                    <div className="block bg-white w-12 h-1"></div>
-                    <div className="block bg-white w-12 h-1"></div>
+                <div className="relative flex flex-col gap-1.5 px-4 hover:gap-2 cursor-pointer transition-all duration-300 ease-in-out">
+                    <div className="block bg-red-500 rounded-full w-12 h-0.5 "></div>
+                    <div className="block bg-red-500 rounded-full w-12 h-0.5"></div>
+                    <div className="block bg-red-500 rounded-full w-12 h-0.5"></div>
 
                 </div>
             </SheetTrigger>

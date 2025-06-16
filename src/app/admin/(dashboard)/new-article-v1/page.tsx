@@ -5,7 +5,7 @@ import EmbedBlock from "./embedBlock";
 import TextBlock from "./textBlock";
 import { useBlocksStore } from "./useBlockStore";
 
-import withAuth from "../withAuth";
+import withAuth from "../../withAuth";
 
 const ArticleEditor: React.FC = () => {
   const blocks = useBlocksStore((state) => state.blocks);

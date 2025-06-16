@@ -4,8 +4,8 @@ import { PlusCircle } from "lucide-react";
 
 import Link from "next/link";
 import Modal from "../ui/modals";
-import NewArticle from "@/app/admin/new-article/articleModal";
-import { useBlocksStore } from "@/app/admin/new-article/useBlockStore";
+import NewArticle from "@/app/admin/(dashboard)/new-article-v1/articleModal";
+import { useBlocksStore } from "@/app/admin/(dashboard)/new-article-v1/useBlockStore";
 
 import UserProfile from "../user/userProfile";
 

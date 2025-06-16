@@ -1,4 +1,4 @@
-import type { Content } from "@tiptap/react"
+import type { JSONContent } from "@tiptap/react"
 
 export interface Article {
   id: string;
@@ -8,7 +8,7 @@ export interface Article {
   created_at: string;
   updated_at: string;
   badge: string;
-  blocks: Content;
+  blocks: JSONContent;
   keywords: string[];
 }
 

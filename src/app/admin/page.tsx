@@ -1,7 +1,8 @@
-import AdminArticleList from "@/components/articles/ArticleList";
 import { getUser } from "@/queries/user";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import AdminArticleList from "./(dashboard)/_components/articleList";
+import ParallaxScroll from "./(dashboard)/_components/locoWrapper";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
@@ -19,8 +20,12 @@ export default async function PrivatePage() {
       throw new Error(articlesErr?.message || "Error fetching articles");
     }
 
-    return <AdminArticleList articles={articles} error={null} />;
+    // return <AdminArticleList articles={articles} error={null} />;
+    return <ParallaxScroll/>
   } catch (error) {
     return <AdminArticleList error={(error as Error).message} articles={[]} />;
   }
 }
+
+
+

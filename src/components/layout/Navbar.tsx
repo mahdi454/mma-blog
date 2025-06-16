@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import Link from "next/link";
 import MaxWidthWrapper from "../maxWidthWrapper";
@@ -21,12 +22,34 @@ const navigationItems = [
 ];
 
 export default function Navbar() {
+ const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // Handle scroll hide/show
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY) {
+        setIsVisible(false); // Hide on scroll down
+      } else {
+        setIsVisible(true); // Show on scroll up
+      }
+      setLastScrollY(window.scrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+
+
   return (
-    <MaxWidthWrapper>
+    <div
+      className={`sticky top-0 z-10 w-full transition-transform duration-500 ease-in-out  ${isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+    >
+      <nav className="px-4 2xl:px-8 ">
 
-      <nav className="  bg-black/50 backdrop-blur-[1px] text-white">
-
-        <div className="flex justify-between items-center h-16 md:h-20">
+        <div className="flex justify-between items-center h-16 md:h-20 border-x-[1px] border-red-500">
 
 
           <Link href="/" className="h-32  md:h-40 w-36 md:w-44 ml-2 md:ml-4">
@@ -45,7 +68,7 @@ export default function Navbar() {
 
         </div>
       </nav>
-    </MaxWidthWrapper>
+      </div>
   );
 }
 

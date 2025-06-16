@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { Block } from "../../admin/new-article/useBlockStore";
+import { Block } from "../../admin/(dashboard)/new-article-v1/useBlockStore";
 import { Clock } from "lucide-react";
 import { cn, timeSince } from "@/lib/utils";
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react";

@@ -10,7 +10,7 @@ import {
 import { Article } from "@/utils/types";
 import { useCarousel } from "@/hooks/useCarousel";
 import { Badge } from "../ui/badge";
-import { timeSince } from "@/lib/utils";
+import { findFirstImage, findTitle, timeSince } from "@/lib/utils";
 import { Clock } from "lucide-react";
 import Link from "next/link";
 import { useEffect } from "react";
@@ -38,7 +38,6 @@ export default function NewsArticleCarousel({
     <div className="w-full relative pt-6 px-2">
       <div className="flex justify-between text-white pb-2">
         <div className="bg-emerald-700  px-3 py-1 relative clip-arrow w-32 font-semibold rounded-l-sm">
-
           {title}
         </div>
         <p className="text-sm ">
@@ -62,21 +61,18 @@ export default function NewsArticleCarousel({
               <div className=" flex flex-col h-full rounded-md overflow-hidden shadow-md bg-slate-950">
                 {/* Image */}
                 <div className="relative w-full h-48 md:h-60 lg:h-64 bg-slate-950">
-                  {article.blocks[0].type === "image" ? (
+                  {findFirstImage(article.blocks) !== null ? (
                     <>
                       {isBadge && (
-                        <div
-                          className="absolute top-4 rounded-none  pl-2 pr-4 opacity-60 clip-arrow bg-emerald-700"
-                         
-                        >
+                        <div className="absolute top-4 rounded-none  pl-2 pr-4 opacity-60 clip-arrow bg-emerald-700">
                           {article.category || "Unknown"}
                         </div>
                       )}
                       <Image
                         width={1000}
                         height={500}
-                        src={article.blocks[0].url || ""}
-                        alt={article.blocks[0].desc || "Image"}
+                        src={findFirstImage(article.blocks)?.src || ""}
+                        alt={findFirstImage(article.blocks)?.alt || "Image"}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           const target = e.target as HTMLImageElement; // Assert type
@@ -97,7 +93,7 @@ export default function NewsArticleCarousel({
                 {/* Content */}
                 <div className="flex flex-col flex-grow justify-between px-3 py-2 bg-slate-900 border-t-2 border-emerald-700">
                   <h3 className="font-semibold line-clamp-3">
-                    {article.blocks[1].type === "h1" ? article.blocks[1].content : "Untitled"}
+                    {findTitle(article.blocks.content) || "Untitled Article"}
                   </h3>
                   <div className="w-full flex justify-between items-center mt-3">
                     <Link href={`/articles/${article.id}`}>

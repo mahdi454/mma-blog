@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { articleService } from "@/app/admin/new-article/action";
+import { articleService } from "@/app/admin/(dashboard)/new-article-v1/action";
 import { useCallback, useState } from "react";
 import { timeSince } from "@/lib/utils";
 
