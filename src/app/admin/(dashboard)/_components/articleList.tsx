@@ -2,24 +2,10 @@
 import type { Article } from "@/utils/types";
 import articlesData from "@/data/articlaJsonData.json";
 
-import {
-  CircleCheckBig,
-  EllipsisVertical,
-  Square,
-  SquareCheckBig,
-} from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import Link from "next/link";
+import { CircleCheckBig } from "lucide-react";
+
 import { articleService } from "@/app/admin/(dashboard)/new-article-v1/action";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { timeSince } from "@/lib/utils";
 import MaxWidthWrapper from "@/components/maxWidthWrapper";
 import ArticleCard from "./articleCard";
@@ -34,10 +20,46 @@ export default function AdminArticleList({
   error: string | null;
 }) {
   const [articles, setArticles] = useState<Article[]>(initialArticles);
-  const art1 = articlesData.articles.slice(0, 6);
-  const art2 = articlesData.articles.slice(6, 12);
-  const art3 = articlesData.articles.slice(12, 17);
   const [err, setError] = useState("");
+  const columnsRef = useRef<HTMLDivElement[]>([]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.pageYOffset;
+
+      columnsRef.current.forEach((col, i) => {
+        if (!col) return;
+
+        // Different parallax speeds for each column
+        let speed = 0;
+        switch (i) {
+          case 0:
+            speed = 0;
+            break; // Static
+          case 1:
+            speed = 0.2;
+            break; // Slow
+          case 2:
+            speed = 0;
+            break; // Static
+          case 3:
+            speed = 0.2;
+            break; // Reverse direction
+        }
+
+        const yPos = scrollY * speed;
+        col.style.transform = `translateY(${yPos}px)`;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  const columns = [
+    articles,
+    articles.slice(1, 6),
+    articles.slice(0, 5),
+  ];
   if (error) {
     return (
       <div className="text-center text-red-500">Error loading articles</div>
@@ -71,52 +93,20 @@ export default function AdminArticleList({
     }
   }, []);
   return (
-    <LocoWrapper>
-      <div
-        data-scroll-section
-        className="grid grid-cols-4 gap-4 h-full px-8 py-12"
-      >
-        {/* Left column - scrolls down (normal speed) */}
-        <div className="space-y-6" data-scroll data-scroll-speed="-1">
-          {art1.map((article) => (
-            <ArtCard
-              key={article.id}
-              article={article}
-              onDelete={handleDelete}
-            />
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3  gap-4 overflow-hidden justify-center px-4 pt-12 bg-black/5 backdrop-blur-[2px]">
+      {columns.map((cards, i) => (
+        <div
+          key={i}
+          ref={(el) => {
+            columnsRef.current[i] = el!;
+          }}
+          className="grid gap-4 content-start will-change-transform"
+        >
+          {cards.map((card) => (
+            <ArticleCard article={card} key={card.id} onDelete={handleDelete} />
           ))}
         </div>
-        <div className="space-y-6" data-scroll data-scroll-speed="-1">
-          {articles.map((article) => (
-            <ArticleCard
-              key={article.id}
-              article={article}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-        <div className="space-y-6" data-scroll data-scroll-speed="1">
-          {art1.map((article) => (
-            <ArtCard
-              key={article.id}
-              article={article}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-        
-
-        {/* Right column - scrolls up (reverse) */}
-        <div className="space-y-6" data-scroll data-scroll-speed="1">
-          {art3.map((article) => (
-            <ArtCard
-              key={article.id}
-              article={article}
-              onDelete={handleDelete}
-            />
-          ))}
-        </div>
-      </div>
-    </LocoWrapper>
+      ))}
+    </div>
   );
 }

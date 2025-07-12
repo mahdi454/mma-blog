@@ -24,7 +24,7 @@ export interface MinimalTiptapProps
 }
 
 const Toolbar = ({ editor }: { editor: Editor }) => (
-  <div className="sticky top-0 w-full flex justify-center items-center py-2 bg-white/20 z-50">
+  <div className="sticky top-0 w-full flex justify-center items-center py-2 bg-black/60 backdrop-blur-md z-50">
     <div className="flex w-max items-center gap-px">
       <SectionOne editor={editor} activeLevels={[1, 2, 3]} variant="outline" />
 

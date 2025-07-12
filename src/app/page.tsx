@@ -2,7 +2,9 @@ import { createClient } from "@/utils/supabase/server";
 import NewsGrid from "@/components/Home/NewsGrid";
 import MaxWidthWrapper from "@/components/maxWidthWrapper";
 import FeaturedArticle from "@/components/Home/FeaturedArticle";
-import StoryCarousel from "@/components/socialMedia/newShortYoutube";
+import NewYoutubeShort from "@/components/video/newYoutubeShort";
+import IInstagramStoryYouTube from "@/components/socialMedia/insta";
+import SocialStoryCarousel from "@/components/socialMedia/newShortYoutube";
 
 export default async function HomePage() {
   const supabase = await createClient();
@@ -42,16 +44,17 @@ export default async function HomePage() {
 
     return (
       <div className="lg:px-8 2xl:pl-16 2xl:pr-8 lg:pt-8 2xl:pt-8">
-   
-
         <FeaturedArticle hotArticles={hotArticles} error={null} />
-        <StoryCarousel />
+        {/* <YoutubeStoryCarousel /> */}
+        <NewYoutubeShort/>
+        {/* <IInstagramStoryYouTube/> */}
+        {/* <SocialStoryCarousel/> */}
         <NewsGrid
           ufcArticles={ufcArticles || []}
           boxingArticles={boxingArticles || []}
           error={null}
-          />
-        </div>
+        />
+      </div>
     );
   } catch (error) {
     return (
@@ -62,7 +65,6 @@ export default async function HomePage() {
           boxingArticles={[]}
           error={(error as Error).message}
         />
-         
       </MaxWidthWrapper>
     );
   }

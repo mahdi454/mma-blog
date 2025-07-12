@@ -3,6 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AdminArticleList from "./(dashboard)/_components/articleList";
 import ParallaxScroll from "./(dashboard)/_components/locoWrapper";
+import GridGallery from "./(dashboard)/_components/newGridImage";
 
 export default async function PrivatePage() {
   const supabase = await createClient();
@@ -20,12 +21,9 @@ export default async function PrivatePage() {
       throw new Error(articlesErr?.message || "Error fetching articles");
     }
 
-    // return <AdminArticleList articles={articles} error={null} />;
-    return <ParallaxScroll/>
+    return <AdminArticleList articles={articles} error={null} />;
+
   } catch (error) {
     return <AdminArticleList error={(error as Error).message} articles={[]} />;
   }
 }
-
-
-

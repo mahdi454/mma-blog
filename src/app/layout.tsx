@@ -9,6 +9,7 @@ import { UserProvider } from "./context/userContext";
 import { headers } from "next/headers"; // Import headers to access the request
 import AdminNav from "@/components/layout/AdminNav";
 import Sidebar from "@/components/layout/navSidbar";
+import AdminSidebar from "@/components/layout/navSidbarAdmin";
 
 const IBM_Font = IBM_Plex_Mono({
   weight: "400",
@@ -40,21 +41,13 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <UserProvider>
             <HeroHighlight>
-              {isAdmin ? (
-                <div className="min-h-screen flex flex-col text-slate-50">
-                  <AdminNav />
-                  <main>{children}</main>
+              <div className="min-h-screen grid md:grid-cols-4  text-slate-50">
+                {isAdmin ? <AdminSidebar /> : <Sidebar />}
+                <main className="md:col-span-4 lg:col-span-3  w-full">
+                  {children}
                   <Footer />
-                </div>
-              ) : (
-                <div className="min-h-screen grid grid-cols-4 text-slate-50">
-                  <Sidebar />
-                  <main className="col-span-4 lg:col-span-3 flex flex-col w-full">
-                    {children}
-                    <Footer />
-                  </main>
-                </div>
-              )}
+                </main>
+              </div>
             </HeroHighlight>
           </UserProvider>
         </ThemeProvider>

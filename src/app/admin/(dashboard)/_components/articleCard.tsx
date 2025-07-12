@@ -22,8 +22,18 @@ interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
   const { profile } = useUser();
   return (
-    <div className="max-w-md mx-auto bg-black/50 backdrop-blur-[2px] border border-gray-400 rounded-lg shadow-sm mb-6 text-gray-50">
-      {/* Header */}
+    <div className="max-w-md mx-auto bg-black/50 backdrop-blur-[2px] border border-gray-700 rounded-lg shadow-sm mb-6 text-gray-50">
+    
+
+      {/* Image */}
+      <div>
+        <img
+          className="w-full object-cover max-h-96"
+          src={findFirstImage(article.blocks)?.src || "/placeholder-image.png"}
+          alt={findFirstImage(article.blocks)?.alt || "Article Image"}
+        />
+      </div>
+        {/* Header */}
       <div className="flex items-center px-4 py-2">
         <img
           className="h-10 w-10 rounded-full object-cover border border-gray-300"
@@ -61,22 +71,13 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      {/* Image */}
-      <div>
-        <img
-          className="w-full object-cover max-h-96"
-          src={findFirstImage(article.blocks)?.src || "/placeholder-image.png"}
-          alt={findFirstImage(article.blocks)?.alt || "Article Image"}
-        />
-      </div>
-
       {/* Likes & Title */}
       <div className="px-2">
         <div className="font-semibold text-lg  text-gray-100 line-clamp-3 mt-2">
           {findTitle(article.blocks.content)}
         </div>
-        <div className="text-gray-500 text-sm mb-2 cursor-pointer mt-6">
-          View all comments
+        <div className="text-gray-500 text-sm mb-2 cursor-pointer mt-3">
+          READ MORE
         </div>
       </div>
 

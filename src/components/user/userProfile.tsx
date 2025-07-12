@@ -10,12 +10,14 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useUser } from "@/hooks/useUser";
 import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { LogOut, UserPen } from "lucide-react";
+import { LogOut, PlusCircle, UserPen } from "lucide-react";
 import Link from "next/link";
+import { useUser } from "@/app/context/userContext";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 export default function UserProfile() {
   const { user, profile } = useUser();
@@ -31,47 +33,56 @@ export default function UserProfile() {
   };
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <div className="flex items-center gap-2 border-[1px] border-gray-600 py-1 pl-1 pr-6 rounded-full hover:cursor-pointer">
-          <Image
-            src={profile?.avatar_url || "/user1.png"}
-            alt="Profile Picture"
-            className="w-10 h-10 rounded-full object-cover  bg-gray-300"
-            width={100}
-            height={100}
-            loading="lazy"
-          />
-          <div className="leading-tight">
-            <p className="font-semibold tracking-wide">
-              &#64;{profile?.username?.toUpperCase() || "Unknown"}
-            </p>
-            <p className="text-gray-400">{profile?.email}</p>
-          </div>
+    <div className="flex items-center justify-center flex-col w-full gap-6">
+      <div className="flex items-center justify-center flex-col gap-3">
+        <Image
+          src={profile?.avatar_url || "/user1.png"}
+          alt="Profile Picture"
+          className="w-32 h-32 rounded-full object-cover  bg-gray-300"
+          width={400}
+          height={400}
+          loading="lazy"
+        />
+        <div className="leading-tight text-center">
+          <p className="font-semibold tracking-wide">
+            &#64;{profile?.username?.toUpperCase() || "Unknown"}
+          </p>
+          <p className="text-gray-400">{profile?.email}</p>
         </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-64 bg-gray-900 text-gray-50 border-gray-800">
-        <DropdownMenuLabel>My Profile</DropdownMenuLabel>
-        <DropdownMenuSeparator className="bg-gray-800" />
-        <DropdownMenuItem>
-          <Link href={`/admin/setup-username`} className="flex w-full items-center justify-between">
+      </div>
+      <div className="w-full px-4 space-y-6">
+      <div className="w-full flex flex-col gap-3">
+        <Button asChild>
+          <Link
+            href={`/admin/setup-username`}
+            className="flex w-full items-center justify-between"
+          >
             Edit Profile
-            <DropdownMenuShortcut>
-              <UserPen width={18} />
-            </DropdownMenuShortcut>
+            <UserPen width={18} />
           </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator className="bg-gray-800" />
-        <DropdownMenuItem
-          className="text-red-600 focus:text-red-600"
+        </Button>
+        <Button
+          className="text-red-600 focus:text-red-600 flex w-full items-center justify-between opacity-85"
           onClick={signOut}
         >
           Sign Out
-          <DropdownMenuShortcut>
-            <LogOut width={18} />
-          </DropdownMenuShortcut>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+          <LogOut width={18} />
+        </Button>
+      </div>
+      <div className="relative">
+        <Separator className="bg-slate-600"/>
+        <span className="absolute text-sm bg-slate-950 px-1 -bottom-[10px] left-1/2 transform -translate-x-1/2 rounded-full">OR</span>
+      </div>
+      <Button asChild className="">
+        <Link
+          href="/admin/new-article"
+          className="w-full items-center justify-between "
+        >
+          <span>New Article</span>
+          <PlusCircle size={20} />
+        </Link>
+      </Button>
+      </div>
+    </div>
   );
 }

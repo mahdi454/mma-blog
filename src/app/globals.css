@@ -86,3 +86,24 @@ body {
   }
 
 }
+
+/* globals.css or in your style block */
+
+[data-direction="outer"] {
+  --origin: calc(-1rem * 2);
+  --destination: calc(clamp(280px, 20vw, 100vw) * 3.4 * 7 / 5 + 1rem);
+}
+
+[data-direction="inner"] {
+  --origin: calc(-1rem);
+  --destination: calc(clamp(280px, 20vw, 100vw) * 1.5 * 7 / 5 + 1rem);
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateY(var(--origin, 0%));
+  }
+  100% {
+    transform: translateY(var(--destination, -50%));
+  }
+}
