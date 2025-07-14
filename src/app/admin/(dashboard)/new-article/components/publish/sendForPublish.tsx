@@ -1,44 +1,60 @@
-"use client"
+"use client";
 
-import { useCallback, useState } from "react"
-import { useUser } from "@/hooks/useUser"
-import { useRouter } from "next/navigation"
-import { articleService } from "@/services/articleService"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { useCallback, useEffect, useState } from "react";
+import { useUser } from "@/hooks/useUser";
+import { useRouter } from "next/navigation";
+import { articleService } from "@/services/articleService";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from "@/components/ui/select"
-import type { Article } from "@/utils/types"
-import type { Content } from "@tiptap/react"
+} from "@/components/ui/select";
+import type { Article } from "@/utils/types";
+import type { Content } from "@tiptap/react";
 
 interface Props {
-  content: Content
-  onClose: () => void
+  article?: Article;
+  content: Content;
+  onClose: () => void;
 }
 
-const categories = ["UFC", "PFL", "ONE Championship", "Boxing"]
-const badges = ["Featured", "Normal", "Hot"]
+const categories = ["UFC", "PFL", "ONE Championship", "Boxing"];
+const badges = ["Featured", "Normal", "Hot"];
 
-export default function SendArticleForm({ content, onClose }: Props) {
-  const { profile: user } = useUser()
+export default function SendArticleForm({ content, onClose, article }: Props) {
+  const { profile: user } = useUser();
   const [rawKeywords, setRawKeywords] = useState("");
+  const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [formData, setFormData] = useState<Partial<Article>>({
     category: "UFC",
     badge: "Normal",
     keywords: [],
-  })
-  const [error, setError] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
+  });
+
+  useEffect(() => {
+    if (article) {
+      setFormData({
+        category: article.category || "UFC",
+        badge: article.badge || "Normal",
+        keywords: article.keywords || [],
+      });
+      setRawKeywords(article.keywords?.join(", ") || "");
+    }
+  }, [article]);
 
   const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    (
+      e: React.ChangeEvent<
+        HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+      >
+    ) => {
       const { name, value } = e.target;
 
       if (name === "keywords") {
@@ -62,33 +78,38 @@ export default function SendArticleForm({ content, onClose }: Props) {
     []
   );
 
-
-
   const handleSubmit = useCallback(
     async (e: React.FormEvent) => {
-      e.preventDefault()
-      setIsSubmitting(true)
-      setError("")
+      e.preventDefault();
+      setIsSubmitting(true);
+      setError("");
 
       try {
-        if (!user) throw new Error("You must be logged in")
-
-        await articleService.createArticle({
-          ...formData,
-          author_id: user.id,
-          blocks: content,
-        } as Article)
+        if (!user) throw new Error("You must be logged in");
+        if (article) {
+          await articleService.updateArticle(article.id, {
+            ...formData,
+            author_id: user.id,
+            blocks: content,
+          } as Article);
+        } else {
+          await articleService.createArticle({
+            ...formData,
+            author_id: user.id,
+            blocks: content,
+          } as Article);
+        }
 
         // router.push("/admin")
       } catch (err) {
-        setError(err instanceof Error ? err.message : "Something went wrong")
+        setError(err instanceof Error ? err.message : "Something went wrong");
       } finally {
-        setIsSubmitting(false)
-        onClose()
+        setIsSubmitting(false);
+        onClose();
       }
     },
     [formData, content, user, onClose]
-  )
+  );
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4 py-2">
@@ -104,15 +125,15 @@ export default function SendArticleForm({ content, onClose }: Props) {
           placeholder="e.g. UFC 300, Dana White, Abu Dhabi"
           className="bg-black/50"
         />
-
-
       </div>
 
       <div className="grid gap-2">
         <Label>Category</Label>
         <Select
           value={formData.category}
-          onValueChange={(value) => setFormData((p) => ({ ...p, category: value }))}
+          onValueChange={(value) =>
+            setFormData((p) => ({ ...p, category: value }))
+          }
         >
           <SelectTrigger className="bg-black/50">
             <SelectValue placeholder="Select a category" />
@@ -131,7 +152,9 @@ export default function SendArticleForm({ content, onClose }: Props) {
         <Label>Badge</Label>
         <Select
           value={formData.badge}
-          onValueChange={(value) => setFormData((p) => ({ ...p, badge: value }))}
+          onValueChange={(value) =>
+            setFormData((p) => ({ ...p, badge: value }))
+          }
         >
           <SelectTrigger className="bg-black/50">
             <SelectValue placeholder="Select badge" />
@@ -155,5 +178,5 @@ export default function SendArticleForm({ content, onClose }: Props) {
         </Button>
       </div>
     </form>
-  )
+  );
 }

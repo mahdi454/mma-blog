@@ -9,7 +9,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { timeSince } from "@/lib/utils";
 import MaxWidthWrapper from "@/components/maxWidthWrapper";
 import ArticleCard from "./articleCard";
-import ArtCard from "./artCard";
 import LocoWrapper from "./locoWrapper";
 
 export default function AdminArticleList({

@@ -34,6 +34,21 @@ export const articleService = {
     return data as Article;
   },
 
+  async updateArticle(
+    id: string,
+    updates: Partial<Omit<Article, "id" | "created_at" | "updated_at">>
+  ) {
+    const { data, error } = await supabase
+      .from("articles")
+      .update({ ...updates, updated_at: new Date().toISOString() })
+      .eq("id", id)
+      .select()
+      .single();
+
+    if (error) throw error;
+    return data as Article;
+  },
+
   async getArticleById(id: string) {
     const { data, error } = await supabase
       .from("articles")

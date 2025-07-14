@@ -1,5 +1,5 @@
 import { useUser } from "@/app/context/userContext";
-import { findTitle, timeSince } from "@/lib/utils";
+import { findFirstImage, findTitle, timeSince } from "@/lib/utils";
 import { Article } from "@/utils/types";
 import { Clock } from "lucide-react";
 import Image from "next/image";
@@ -43,25 +43,25 @@ function ArticleHeader({ article }: Props) {
               </span>
             )} */}
 
-
-      <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-gray-100 mb-2">{title}</h1>
-
-      {/* <div className="flex items-center justify-between text-sm text-gray-600 mt-4">
-        <div className="flex items-center space-x-4">
-          <span>
-            {new Date(article.created_at).toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })}
-          </span>
-          <span>·</span>
-          <span>5 min read</span>
+      <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold text-gray-100 mb-2">
+        {title}
+      </h1>
+      <div className="my-6 w-full overflow-hidden">
+        <div className="relative w-full h-full lg:h-[500px] flex items-center justify-center overflow-hidden">
+          <Image
+            width={1140}
+            height={720}
+            src={findFirstImage(article.blocks)?.src || ""}
+            alt={findFirstImage(article.blocks)?.alt || "Image"}
+            className="w-full h-full object-cover object-[center_10%] bg-gray-950"
+          />
+          {findFirstImage(article.blocks)?.alt && (  // need to be checked because sheet happen
+            <p className="absolute bottom-0 right-0 bg-black/65 px-1 text-xs sm:text-sm text-gray-300">
+              findFirstImage(article.blocks)?.alt
+            </p>
+          )}
         </div>
-        <div>
-          <span>Category: {article.category}</span>
-        </div>
-      </div> */}
+      </div>
     </header>
   );
 }

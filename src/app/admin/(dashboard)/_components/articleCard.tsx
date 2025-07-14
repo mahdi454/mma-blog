@@ -54,7 +54,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
             <DropdownMenuLabel>My Article</DropdownMenuLabel>
 
             <DropdownMenuSeparator className="bg-gray-800" />
-            <DropdownMenuItem className="">Edit</DropdownMenuItem>
+            <DropdownMenuItem>
+               <Link href={`/admin/edit/${article.id}`} className="w-full">
+                Edit
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem>
               <Link href={`/admin/preview/${article.id}`} className="w-full">
                 Preview

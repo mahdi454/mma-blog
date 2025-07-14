@@ -21,12 +21,41 @@ const LinkEditPopover = ({ editor, size, variant }: LinkEditPopoverProps) => {
   const { from, to } = editor.state.selection
   const text = editor.state.doc.textBetween(from, to, " ")
 
-  const onSetLink = React.useCallback(
-    (url: string, text?: string, openInNewTab?: boolean) => {
+  // const onSetLink = React.useCallback(
+  //   (url: string, text?: string, openInNewTab?: boolean) => {
+  //     editor
+  //       .chain()
+  //       .focus()
+  //       .extendMarkRange("link")
+  //       .insertContent({
+  //         type: "text",
+  //         text: text || url,
+  //         marks: [
+  //           {
+  //             type: "link",
+  //             attrs: {
+  //               href: url,
+  //               target: openInNewTab ? "_blank" : "",
+  //             },
+  //           },
+  //         ],
+  //       })
+  //       .setLink({ href: url })
+  //       .run()
+
+  //     editor.commands.enter()
+  //   },
+  //   [editor]
+  // )
+const onSetLink = React.useCallback(
+  (url: string, text?: string, openInNewTab?: boolean) => {
+    const { state } = editor
+    const { from, to, empty } = state.selection
+
+    if (empty) {
       editor
         .chain()
         .focus()
-        .extendMarkRange("link")
         .insertContent({
           type: "text",
           text: text || url,
@@ -35,18 +64,28 @@ const LinkEditPopover = ({ editor, size, variant }: LinkEditPopoverProps) => {
               type: "link",
               attrs: {
                 href: url,
-                target: openInNewTab ? "_blank" : "",
+                target: openInNewTab ? "_blank" : null,
               },
             },
           ],
         })
-        .setLink({ href: url })
         .run()
+    } else {
+      editor
+        .chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({
+          href: url,
+          target: openInNewTab ? "_blank" : null,
+        })
+        .run()
+    }
 
-      editor.commands.enter()
-    },
-    [editor]
-  )
+    setOpen(false)
+  },
+  [editor]
+)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

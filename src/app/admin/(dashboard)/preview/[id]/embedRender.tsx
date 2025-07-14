@@ -36,7 +36,7 @@ export default function EmbedComponent({ type, src, title }: EmbedProps) {
 
     case "twitter":
       return (
-        <figure className="w-full max-w-xl mx-auto bg-white rounded-md shadow overflow-hidden">
+        <figure className="w-full max-w-lg mx-auto bg-white rounded-md shadow overflow-hidden">
           <blockquote className="twitter-tweet" data-dnt="true">
             <a href={src} target="_blank" rel="noopener noreferrer">
               {title || "View on Twitter"}
@@ -53,7 +53,7 @@ export default function EmbedComponent({ type, src, title }: EmbedProps) {
 
     case "instagram":
       return (
-        <figure className="instagram-embed w-full max-w-xl mx-auto">
+        <figure className="instagram-embed w-full max-w-lg mx-auto">
           <blockquote
             className="instagram-media"
             data-instgrm-permalink={src}
