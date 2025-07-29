@@ -1,7 +1,7 @@
 import { headers } from "next/headers"; // Import headers to access the request
 import AdminNav from "./AdminNav";
 import Navbar from "./Navbar";
-import Sidebar from "./navSidbar";
+import Sidebar from "../sidebar/navSidbar";
 
 export default async function MainNav() {
     const headersResult = await headers();

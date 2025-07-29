@@ -1,7 +1,5 @@
-// components/EmbedComponentView.tsx
 "use client";
-
-import React, { useEffect } from "react";
+import React from "react";
 
 interface EmbedProps {
   type: string;
@@ -13,19 +11,18 @@ export default function EmbedComponent({ type, src, title }: EmbedProps) {
   switch (type) {
     case "youtube": {
       const result = extractYouTubeId(src);
-      if (!result)
-        return <div className="text-red-500">Invalid YouTube URL</div>;
+      if (!result) return <div className="text-red-500">Invalid YouTube URL</div>;
       const { id: youtubeId, isShorts } = result;
+      
       return (
-        <figure
-          className={`w-full ${isShorts ? "aspect-[9/16]" : "aspect-video"}`}
-        >
+        <figure className={`w-full ${isShorts ? "aspect-[9/16]" : "aspect-video"}`}>
           <iframe
             src={`https://www.youtube.com/embed/${youtubeId}`}
             title={title || "YouTube video"}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             className="w-full h-full rounded-md"
+            // No special handling needed - GSAP handles it automatically!
           />
           {title && (
             <figcaption className="text-center text-xs text-gray-500 mt-1 italic">
@@ -53,116 +50,82 @@ export default function EmbedComponent({ type, src, title }: EmbedProps) {
         </figure>
       );
 
-   case "instagram":
-  return (
-    <figure className="instagram-embed w-full max-w-lg mx-auto">
-      <blockquote
-        className="instagram-media"
-        data-instgrm-permalink={src}
-        data-instgrm-version="14"
-        data-instgrm-captioned
-      >
-        <a href={src} target="_blank" rel="noopener noreferrer">
-          {title || "View on Instagram"}
-        </a>
-      </blockquote>
-
-      {title && (
-        <figcaption className="text-center text-xs text-gray-500 mt-1 italic">
-          {title}
-        </figcaption>
-      )}
-
-      <InstagramScript />
-    </figure>
-  );
-
+    case "instagram":
+      return (
+        <figure className="instagram-embed w-full max-w-lg mx-auto">
+          <blockquote
+            className="instagram-media"
+            data-instgrm-permalink={src}
+            data-instgrm-version="14"
+            data-instgrm-captioned
+          >
+            <a href={src} target="_blank" rel="noopener noreferrer">
+              {title || "View on Instagram"}
+            </a>
+          </blockquote>
+          {title && (
+            <figcaption className="text-center text-xs text-gray-500 mt-1 italic">
+              {title}
+            </figcaption>
+          )}
+          <InstagramScript />
+        </figure>
+      );
 
     default:
       return <div className="text-red-500">Unsupported embed type</div>;
   }
 }
 
-// Extract YouTube video ID from various URL formats
-type YouTubeIdResult = {
-  id: string;
-  isShorts: boolean;
-} | null;
+// Helper functions
+type YouTubeIdResult = { id: string; isShorts: boolean; } | null;
 
-export function extractYouTubeId(url: string): YouTubeIdResult {
+function extractYouTubeId(url: string): YouTubeIdResult {
   try {
     const u = new URL(url);
-
-    // youtu.be/<id>
     if (u.hostname === "youtu.be") {
       const id = u.pathname.slice(1);
-      if (id.length === 11) {
-        return { id, isShorts: false };
-      }
+      if (id.length === 11) return { id, isShorts: false };
     }
-
-    // watch?v=<id>
     const vParam = u.searchParams.get("v");
-    if (vParam && vParam.length === 11) {
-      return { id: vParam, isShorts: false };
-    }
-
-    // /embed/<id> or /v/<id> or /shorts/<id>
+    if (vParam && vParam.length === 11) return { id: vParam, isShorts: false };
     const paths = u.pathname.split("/").filter(Boolean);
     const idx = paths.findIndex((p) => ["embed", "v", "shorts"].includes(p));
     if (idx !== -1 && paths[idx + 1] && paths[idx + 1].length === 11) {
       const isShorts = paths[idx] === "shorts";
       return { id: paths[idx + 1], isShorts };
     }
-
     return null;
   } catch {
     return null;
   }
 }
 
-// Load Twitter widget script
 const TwitterScript = () => {
   React.useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://platform.twitter.com/widgets.js";
     script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
+    document.head.appendChild(script);
   }, []);
   return null;
 };
 
-// Load Instagram embed script
 const InstagramScript = () => {
   React.useEffect(() => {
     const process = () => {
-      if (window.instgrm?.Embeds) {
-        window.instgrm.Embeds.process();
-      }
+      if (window.instgrm?.Embeds) window.instgrm.Embeds.process();
     };
-
-    const existing = document.querySelector<HTMLScriptElement>(
-      'script[src="https://www.instagram.com/embed.js"]'
-    );
-
+    const existing = document.querySelector('script[src*="instagram.com/embed.js"]');
     if (existing) {
-      process(); // already loaded → just process
+      process();
       return;
     }
-
     const script = document.createElement("script");
-    script.src = "https://www.instagram.com/?theme=dark/embed.js";
+    script.src = "https://www.instagram.com/embed.js";
     script.async = true;
     script.onload = process;
-    document.body.appendChild(script);
-
-    // don’t remove script on unmount, so others can reuse it
+    document.head.appendChild(script);
   }, []);
-
   return null;
 };
-
-

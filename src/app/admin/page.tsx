@@ -2,8 +2,7 @@ import { getUser } from "@/queries/user";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import AdminArticleList from "./(dashboard)/_components/articleList";
-import ParallaxScroll from "./(dashboard)/_components/locoWrapper";
-import GridGallery from "./(dashboard)/_components/newGridImage";
+
 
 export default async function PrivatePage() {
   const supabase = await createClient();

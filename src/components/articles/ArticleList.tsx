@@ -6,7 +6,7 @@ import {
   Square,
   SquareCheckBig,
 } from "lucide-react";
-import MaxWidthWrapper from "../maxWidthWrapper";
+import MaxWidthWrapper from "../wrapper/maxWidthWrapper";
 import {
   DropdownMenu,
   DropdownMenuContent,

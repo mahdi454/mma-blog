@@ -1,4 +1,4 @@
-import MaxWidthWrapper from "@/components/maxWidthWrapper";
+import MaxWidthWrapper from "@/components/wrapper/maxWidthWrapper";
 import Post from "./post";
 import { createClient } from "@/utils/supabase/server";
 import ArticleGrid from "@/components/articles/articleGrid";

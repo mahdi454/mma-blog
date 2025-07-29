@@ -1,4 +1,4 @@
-import type { JSONContent } from "@tiptap/react"
+import type { JSONContent } from "@tiptap/react";
 
 export interface Article {
   id: string;
@@ -11,7 +11,17 @@ export interface Article {
   blocks: JSONContent;
   keywords: string[];
 }
-
+export interface EmbedMedia {
+  id: string;
+  type: string;
+  author_id: string;
+  published: boolean;
+  created_at: string;
+  caption: string;
+  embed_code: string;
+  badge: string;
+  keywords: string[];
+}
 
 export interface SportsEvent {
   id: string;
@@ -19,7 +29,7 @@ export interface SportsEvent {
   event_date: string;
   organization: string;
   location?: string;
-  status: 'upcoming' | 'ongoing' | 'completed';
+  status: "upcoming" | "ongoing" | "completed";
   created_at: string;
 }
 

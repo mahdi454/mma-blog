@@ -1,4 +1,4 @@
-import MaxWidthWrapper from "@/components/maxWidthWrapper";
+import MaxWidthWrapper from "@/components/wrapper/maxWidthWrapper";
 import { Badge } from "@/components/ui/badge";
 import { timeSince } from "@/lib/utils";
 import { createClient } from "@/utils/supabase/server";

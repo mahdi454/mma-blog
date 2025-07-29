@@ -22,7 +22,7 @@ interface ArticleCardProps {
 const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
   const { profile } = useUser();
   return (
-    <div className="max-w-md mx-auto bg-black/50 backdrop-blur-[2px] border border-gray-700 rounded-lg shadow-sm mb-6 text-gray-50">
+    <div className="max-w-md mx-auto bg-black/50 backdrop-blur-[2px] border border-gray-700 rounded-lg overflow-hidden shadow-sm mb-6 text-gray-50">
     
 
       {/* Image */}
@@ -34,7 +34,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
         />
       </div>
         {/* Header */}
-      <div className="flex items-center px-4 py-2">
+      <div className="flex items-center px-2 py-2">
         <img
           className="h-10 w-10 rounded-full object-cover border border-gray-300"
           src={profile?.avatar_url}
@@ -77,7 +77,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article, onDelete }) => {
       </div>
       {/* Likes & Title */}
       <div className="px-2">
-        <div className="font-semibold text-lg  text-gray-100 line-clamp-3 mt-2">
+        <div className="font-semibold text-lg  text-gray-100  mt-2">
           {findTitle(article.blocks.content)}
         </div>
         <div className="text-gray-500 text-sm mb-2 cursor-pointer mt-3">

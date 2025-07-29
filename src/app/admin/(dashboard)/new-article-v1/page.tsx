@@ -1,5 +1,5 @@
 "use client";
-import MaxWidthWrapper from "@/components/maxWidthWrapper";
+import MaxWidthWrapper from "@/components/wrapper/maxWidthWrapper";
 import ImageBlock from "./imageBlock";
 import EmbedBlock from "./embedBlock";
 import TextBlock from "./textBlock";

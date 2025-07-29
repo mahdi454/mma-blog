@@ -1,6 +1,6 @@
 
 "use client";
-import MaxWidthWrapper from "@/components/maxWidthWrapper";
+import MaxWidthWrapper from "@/components/wrapper/maxWidthWrapper";
 
 import React, { useRef, useState, useEffect } from "react";
 import { XCircle, PlusCircle } from "lucide-react";

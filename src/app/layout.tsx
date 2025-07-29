@@ -6,10 +6,11 @@ import { HeroHighlight } from "@/components/ui/bgDot";
 import { IBM_Plex_Mono } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import { UserProvider } from "./context/userContext";
-import { headers } from "next/headers"; // Import headers to access the request
-import AdminNav from "@/components/layout/AdminNav";
-import Sidebar from "@/components/layout/navSidbar";
-import AdminSidebar from "@/components/layout/navSidbarAdmin";
+import { headers } from "next/headers";
+import Sidebar from "@/components/sidebar/navSidbar";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { useSidebar } from "@/components/ui/sidebar";
+import ContentLayout from "@/components/sidebar/contentLayout";
 
 const IBM_Font = IBM_Plex_Mono({
   weight: "400",
@@ -28,11 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headersResult = await headers();
-
-  // Get the custom "x-layout" header
   const layoutType = headersResult.get("x-layout");
-
-  // Check if the path is for the admin route
   const isAdmin = layoutType === "admin";
 
   return (
@@ -41,13 +38,9 @@ export default async function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <UserProvider>
             <HeroHighlight>
-              <div className="min-h-screen grid md:grid-cols-4  text-slate-50">
-                {isAdmin ? <AdminSidebar /> : <Sidebar />}
-                <main className="md:col-span-4 lg:col-span-3  w-full">
-                  {children}
-                  <Footer />
-                </main>
-              </div>
+              <SidebarProvider>
+                <ContentLayout isAdmin={isAdmin}>{children}</ContentLayout>
+              </SidebarProvider>
             </HeroHighlight>
           </UserProvider>
         </ThemeProvider>

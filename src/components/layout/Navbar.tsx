@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import MaxWidthWrapper from "../maxWidthWrapper";
+import MaxWidthWrapper from "../wrapper/maxWidthWrapper";
 import { MenuSheet } from "./menu";
 import Image from "next/image";
 import { Mouse_Memoirs } from "next/font/google";

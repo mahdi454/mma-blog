@@ -69,19 +69,7 @@ export default function UserProfile() {
           <LogOut width={18} />
         </Button>
       </div>
-      <div className="relative">
-        <Separator className="bg-slate-600"/>
-        <span className="absolute text-sm bg-slate-950 px-1 -bottom-[10px] left-1/2 transform -translate-x-1/2 rounded-full">OR</span>
-      </div>
-      <Button asChild className="">
-        <Link
-          href="/admin/new-article"
-          className="w-full items-center justify-between "
-        >
-          <span>New Article</span>
-          <PlusCircle size={20} />
-        </Link>
-      </Button>
+      
       </div>
     </div>
   );
